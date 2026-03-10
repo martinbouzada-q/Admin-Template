@@ -58,6 +58,48 @@
 
         /* Ensure icons follow text color on hover/focus */
         #sidebar a:hover i, #sidebar a:focus i { color: inherit; }
+        
+        /* Search input focus/active */
+        #search:focus, #search:active {
+            background-color: #ffffff;
+            color: #1f2937;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96,165,250,0.12);
+            outline: none;
+        }
+
+        /* Nav links hover & focus */
+        #nav-active, #nav-link {
+            transition: color 120ms ease, background-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+        }
+        #nav-active:hover, #nav-link:hover, #nav-active:focus, #nav-link:focus {
+            background-color: rgba(255,255,255,0.04);
+            color: #ffffff;
+            text-decoration: underline;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+            transform: translateY(-2px);
+        }
+
+        /* Dropdown list items hover */
+        #myDropdown a {
+            transition: background-color 120ms ease, transform 100ms ease, color 120ms ease;
+        }
+        #myDropdown a:hover {
+            background-color: rgba(255,255,255,0.04);
+            color: #ffffff;
+            transform: translateX(6px);
+        }
+
+        /* Metric cards hover effect */
+        #metrics .bg-gradient-to-b {
+            transition: transform 200ms cubic-bezier(.2,.8,.2,1), box-shadow 200ms ease, filter 200ms ease;
+            will-change: transform, box-shadow;
+        }
+        #metrics .bg-gradient-to-b:hover, #metrics .bg-gradient-to-b:focus {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 40px rgba(2,6,23,0.45);
+            filter: saturate(1.05) brightness(1.02);
+        }
     </style>
 
 </head>
