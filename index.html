@@ -15,6 +15,51 @@
     <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet"> <!--Totally optional :) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js" integrity="sha256-xKeoJ50pzbUGkpQxDYHD7o7hxe0LaOGeguUidbq6vis=" crossorigin="anonymous"></script>
 
+    <style>
+        /* Sidebar button styles for Percy PoC */
+        #sidebar a {
+            border-left: 4px solid transparent;
+            border-radius: 0.25rem;
+            padding-left: 0.75rem;
+            transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 100ms ease, box-shadow 150ms ease;
+        }
+
+        /* Individual base border colors */
+        #sidebar-tasks { border-left-color: #ec4899; }
+        #sidebar-messages { border-left-color: #8b5cf6; }
+        #sidebar-analytics { border-left-color: #3b82f6; }
+        #sidebar-payments { border-left-color: #ef4444; }
+
+        /* Hover states */
+        #sidebar a:hover {
+            background-color: rgba(255,255,255,0.06);
+            transform: translateX(4px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+            color: #ffffff;
+        }
+
+        #sidebar-tasks:hover { border-left-color: #db2777; }
+        #sidebar-messages:hover { border-left-color: #7c3aed; }
+        #sidebar-analytics:hover { border-left-color: #2563eb; }
+        #sidebar-payments:hover { border-left-color: #dc2626; }
+
+        /* Focus and accessible focus-visible */
+        #sidebar a:focus, #sidebar a:focus-visible {
+            background-color: rgba(255,255,255,0.08);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+        }
+
+        /* Active press state */
+        #sidebar a:active {
+            transform: translateX(2px) scale(0.997);
+            background-color: rgba(255,255,255,0.08);
+        }
+
+        /* Ensure icons follow text color on hover/focus */
+        #sidebar a:hover i, #sidebar a:focus i { color: inherit; }
+    </style>
+
 </head>
 
 <body class="bg-gray-800 font-sans leading-normal tracking-normal mt-12">
