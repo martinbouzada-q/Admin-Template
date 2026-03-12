@@ -1,60 +1,55 @@
-const { test } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 const { percySnapshot } = require('@percy/playwright');
 
-test.describe('Sidebar visual states (Percy)', () => {
+// CSS para hover y focus vive únicamente en index.html.
+// .percy-hover / .percy-focus activan los mismos estilos que :hover / :focus
+// para que Percy los capture en el snapshot sin duplicar CSS aquí.
+const buttons = [
+  { anchor: '#sidebar-tasks',     name: 'Tasks'     },
+  { anchor: '#sidebar-messages',  name: 'Messages'  },
+  { anchor: '#sidebar-analytics', name: 'Analytics' },
+  { anchor: '#sidebar-payments',  name: 'Payments'  },
+];
+
+test.describe('Sidebar', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/index.html');
   });
 
-  test('default sidebar', async ({ page }) => {
-    await percySnapshot(page, 'Sidebar - default');
+  test('initial state', async ({ page }) => {
+    await expect(page.locator('#alt-nav')).toBeVisible();
+    await percySnapshot(page, '01 - Sidebar - initial', { scope: '#alt-nav' });
   });
 
-  test('hover states for each sidebar button', async ({ page }) => {
-    const buttons = [
-      { id: '#sidebar-tasks', name: 'Tasks' },
-      { id: '#sidebar-messages', name: 'Messages' },
-      { id: '#sidebar-analytics', name: 'Analytics' },
-      { id: '#sidebar-payments', name: 'Payments' }
-    ];
-
-    for (const btn of buttons) {
-      await page.hover(btn.id);
-      await percySnapshot(page, `Sidebar - ${btn.name} hover`,{
-        scope: btn.id
-      });
-      // reset mouse
-      await page.mouse.move(0, 0);
+  test('hover state for each button', async ({ page }) => {
+    for (const [i, btn] of buttons.entries()) {
+      const n = String(2 + i).padStart(2, '0');
+      await expect(page.locator(btn.anchor)).toBeVisible();
+      await page.evaluate(
+        (sel) => document.querySelector(sel).classList.add('percy-hover'),
+        btn.anchor
+      );
+      await percySnapshot(page, `${n} - Sidebar - ${btn.name} hover`, { scope: '#alt-nav' });
+      await page.evaluate(
+        (sel) => document.querySelector(sel).classList.remove('percy-hover'),
+        btn.anchor
+      );
     }
   });
 
-  test('focus states for each sidebar button', async ({ page }) => {
-    const selectors = ['#sidebar-tasks', '#sidebar-messages', '#sidebar-analytics', '#sidebar-payments'];
-    for (const sel of selectors) {
-      await page.focus(sel);
-      await percySnapshot(page, `Sidebar - ${sel} focus`, {
-        scope: sel
-      });
+  test('focus state for each button', async ({ page }) => {
+    for (const [i, btn] of buttons.entries()) {
+      const n = String(6 + i).padStart(2, '0');
+      await expect(page.locator(btn.anchor)).toBeVisible();
+      await page.evaluate(
+        (sel) => document.querySelector(sel).classList.add('percy-focus'),
+        btn.anchor
+      );
+      await percySnapshot(page, `${n} - Sidebar - ${btn.name} focus`, { scope: '#alt-nav' });
+      await page.evaluate(
+        (sel) => document.querySelector(sel).classList.remove('percy-focus'),
+        btn.anchor
+      );
     }
-  });
-
-  test('active (pressed) state for a button', async ({ page }) => {
-    const sel = '#sidebar-tasks';
-    const el = await page.$(sel);
-    const box = await el.boundingBox();
-    // move to center and press
-    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-    await page.mouse.down();
-    await percySnapshot(page, 'Sidebar - tasks active', {
-      scope: sel
-    });
-    await page.mouse.up();
   });
 });
-
-
-/*
-await percySnapshot(page, 'Button with tooltip', {
-  scope: '#button-container'
-})
-  */

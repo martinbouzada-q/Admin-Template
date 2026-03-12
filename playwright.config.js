@@ -2,6 +2,7 @@ require('dotenv').config({ path: '.env' });
 const { defineConfig } = require('@playwright/test');
 
 module.exports = defineConfig({
+  workers: 1,
   testDir: 'tests',
   timeout: 30_000,
   use: {
